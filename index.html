@@ -6,343 +6,668 @@
     <title>Muhammad Dimas Ajie Nugroho | Portofolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
-        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .hero-gradient { background: radial-gradient(circle at 50% 50%, #4338ca 0%, #0f172a 100%); }
+        :root {
+            --bg-base: #060910;
+            --bg-surface: #0d1117;
+            --accent-indigo: #6366f1;
+            --accent-emerald: #34d399;
+            --accent-violet: #8b5cf6;
+            --text-primary: #f1f5f9;
+            --text-muted: #64748b;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-primary);
+            background-color: var(--bg-base);
+            overflow-x: hidden;
+        }
+
+        /* =============================================
+           MASTER BACKGROUND SYSTEM
+        ============================================= */
+
+        /* Base canvas layer */
+        .site-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background-color: #060910;
+            pointer-events: none;
+        }
+
+        /* Layer 1: Deep radial vignette */
+        .site-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 60% at 20% 10%, rgba(99, 102, 241, 0.10) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 80% 90%, rgba(52, 211, 153, 0.07) 0%, transparent 55%),
+                radial-gradient(ellipse 50% 40% at 50% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 70%);
+        }
+
+        /* Layer 2: Dot grid */
+        .site-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(255,255,255,0.035) 1px, transparent 0);
+            background-size: 28px 28px;
+        }
+
+        /* Layer 3: Noise texture SVG overlay */
+        .site-bg-noise {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.018;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+            background-size: 256px 256px;
+        }
+
+        /* Layer 4: Subtle horizontal scanlines */
+        .site-bg-lines {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 3px,
+                rgba(255,255,255,0.006) 3px,
+                rgba(255,255,255,0.006) 4px
+            );
+        }
+
+        /* All page content sits above bg layers */
+        .page-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* =============================================
+           SECTION BACKGROUNDS — each slightly distinct
+        ============================================= */
+
+        .section-about {
+            background: linear-gradient(180deg,
+                rgba(13,17,23,0) 0%,
+                rgba(13,17,23,0.85) 15%,
+                rgba(13,17,23,0.85) 85%,
+                rgba(13,17,23,0) 100%
+            );
+        }
+
+        .section-experience {
+            background: linear-gradient(180deg,
+                transparent 0%,
+                rgba(6,9,16,0.9) 10%,
+                rgba(6,9,16,0.9) 90%,
+                transparent 100%
+            );
+        }
+
+        .section-skills {
+            background: linear-gradient(180deg,
+                transparent 0%,
+                rgba(10,14,20,0.8) 10%,
+                rgba(10,14,20,0.8) 90%,
+                transparent 100%
+            );
+        }
+
+        .section-projects {
+            background: linear-gradient(180deg,
+                transparent 0%,
+                rgba(6,9,16,0.92) 10%,
+                rgba(6,9,16,0.92) 90%,
+                transparent 100%
+            );
+        }
+
+        .section-contact {
+            background: linear-gradient(180deg,
+                transparent 0%,
+                rgba(6,9,16,0.9) 10%,
+                rgba(6,9,16,0.9) 90%,
+                transparent 100%
+            );
+        }
+
+        /* =============================================
+           AMBIENT GLOW ORBS — floating accent light
+        ============================================= */
+
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+            z-index: 2;
+            animation: orb-drift 20s ease-in-out infinite alternate;
+        }
+
+        .orb-1 {
+            width: 500px; height: 500px;
+            top: -100px; left: -150px;
+            background: radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%);
+            animation-duration: 18s;
+        }
+        .orb-2 {
+            width: 400px; height: 400px;
+            top: 40%; right: -100px;
+            background: radial-gradient(circle, rgba(52,211,153,0.08) 0%, transparent 70%);
+            animation-duration: 24s;
+            animation-delay: -8s;
+        }
+        .orb-3 {
+            width: 350px; height: 350px;
+            bottom: 10%; left: 30%;
+            background: radial-gradient(circle, rgba(139,92,246,0.07) 0%, transparent 70%);
+            animation-duration: 30s;
+            animation-delay: -15s;
+        }
+
+        @keyframes orb-drift {
+            0%   { transform: translate(0px, 0px) scale(1); }
+            33%  { transform: translate(30px, -20px) scale(1.05); }
+            66%  { transform: translate(-20px, 30px) scale(0.97); }
+            100% { transform: translate(15px, 10px) scale(1.02); }
+        }
+
+        /* =============================================
+           HERO SPECIFIC: mesh gradient card feel
+        ============================================= */
+
+        .hero-gradient-pill {
+            background: linear-gradient(135deg,
+                rgba(99,102,241,0.15) 0%,
+                rgba(139,92,246,0.10) 100%
+            );
+            border: 1px solid rgba(99,102,241,0.25);
+        }
+
+        /* =============================================
+           GLASS CARDS
+        ============================================= */
+
+        .glass {
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04);
+        }
+
+        .glass:hover {
+            border-color: rgba(99,102,241,0.35);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 20px rgba(99,102,241,0.06), inset 0 1px 0 rgba(255,255,255,0.06);
+        }
+
+        /* =============================================
+           PHOTO FRAME
+        ============================================= */
+
+        .photo-frame {
+            position: relative;
+            z-index: 10;
+        }
+
+        .photo-frame::after {
+            content: '';
+            position: absolute;
+            top: 20px; left: 20px;
+            right: -20px; bottom: -20px;
+            border: 1.5px solid rgba(99,102,241,0.45);
+            border-radius: 1.5rem;
+            z-index: -1;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .photo-frame:hover::after {
+            top: 10px; left: 10px;
+            right: -10px; bottom: -10px;
+            border-color: rgba(99,102,241,0.7);
+            box-shadow: 0 0 30px rgba(99,102,241,0.15);
+        }
+
+        /* =============================================
+           NAV
+        ============================================= */
+
+        .nav-glass {
+            background: rgba(6, 9, 16, 0.75);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 1px 0 rgba(99,102,241,0.08);
+        }
+
+        /* =============================================
+           TIMELINE DOTS
+        ============================================= */
+
+        .timeline-dot-active {
+            background: var(--accent-indigo);
+            box-shadow: 0 0 0 4px rgba(99,102,241,0.2), 0 0 12px rgba(99,102,241,0.35);
+        }
+
+        /* =============================================
+           SECTION DIVIDER
+        ============================================= */
+
+        .section-title::before {
+            content: '';
+            display: inline-block;
+            width: 2rem;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-indigo), var(--accent-violet));
+            border-radius: 2px;
+            margin-right: 1rem;
+            vertical-align: middle;
+        }
+
+        /* =============================================
+           SKILL CARDS
+        ============================================= */
+
+        .skill-card {
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-4px);
+        }
+
+        /* =============================================
+           BUTTONS
+        ============================================= */
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            box-shadow: 0 4px 15px rgba(99,102,241,0.3);
+            transition: box-shadow 0.25s ease, transform 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 25px rgba(99,102,241,0.5);
+            transform: translateY(-1px);
+        }
+
+        /* =============================================
+           CONTACT CARD BORDER GLOW
+        ============================================= */
+
+        .contact-card {
+            background: rgba(13, 17, 23, 0.7);
+            border: 1px solid rgba(99,102,241,0.12);
+            backdrop-filter: blur(24px);
+            box-shadow:
+                0 0 0 1px rgba(255,255,255,0.03),
+                0 20px 60px rgba(0,0,0,0.4),
+                0 0 80px rgba(99,102,241,0.04);
+        }
+
+        /* =============================================
+           SCROLL FADE IN
+        ============================================= */
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(6,9,16,0.95);
+            border-top: 1px solid rgba(255,255,255,0.04);
+        }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-200">
+<body>
 
-    <!-- Navigasi -->
-    <nav class="fixed w-full z-50 top-0 glass">
-        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-            <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-emerald-400">
-                
-            </span>
-            <div class="hidden md:flex space-x-8 text-sm font-medium">
-                <a href="#home" class="hover:text-indigo-400 transition">Home</a>
-                <a href="#about" class="hover:text-indigo-400 transition">About</a>
-                <a href="#experience" class="hover:text-indigo-400 transition">Experience</a>
-                <a href="#skills" class="hover:text-indigo-400 transition">Skills</a>
-                <a href="#projects" class="hover:text-indigo-400 transition">Projects</a>
-                <a href="#contact" class="hover:text-indigo-400 transition">Contact</a>
-            </div>
-            <button class="md:hidden" onclick="toggleMenu()">
-                <i data-lucide="menu"></i>
-            </button>
-        </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden px-6 pb-6 space-y-4">
-            <a href="#home" class="block hover:text-indigo-400">Home</a>
-            <a href="#about" class="block hover:text-indigo-400">About</a>
-            <a href="#experience" class="block hover:text-indigo-400">Experience</a>
-            <a href="#skills" class="block hover:text-indigo-400">Skils</a>
-            <a href="#contact" class="block hover:text-indigo-400">Contact</a>
-        </div>
-    </nav>
+    <!-- ===== BACKGROUND LAYERS ===== -->
+    <div class="site-bg"></div>
+    <div class="site-bg-noise"></div>
+    <div class="site-bg-lines"></div>
 
-    <!-- Hero Section -->
-    <section id="home" class="min-h-screen flex items-center pt-20 hero-gradient relative overflow-hidden">
-        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
-        <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center relative z-10">
-            <div>
-                <span class="inline-block px-4 py-1 rounded-full bg-indigo-500/20 text-indigo-400 text-xs font-semibold mb-6 tracking-wider uppercase">
-                    UI/UX Designer & Web Developer
+    <!-- Ambient Glow Orbs -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <!-- ===== PAGE CONTENT ===== -->
+    <div class="page-content">
+
+        <!-- Navigasi -->
+        <nav class="fixed w-full z-50 top-0 nav-glass">
+            <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+                <span class="text-xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-emerald-400">
+                    
                 </span>
-                <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-                    Hello, I'm <span class="text-indigo-400">Muhammad Dimas Ajie Nugroho</span>
-                </h1>
-                <p class="text-slate-400 text-lg mb-8 max-w-lg leading-relaxed">
-                    UI/UX Designer with hands-on experience through academic projects in web development and user interface design, focused on creating engaging and user-friendly experiences.
-                </p>
-                <div class="flex flex-wrap gap-4">
-                    <a href="#contact" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-lg font-medium transition flex items-center gap-2">
-                        Contact me <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </a>
-                    <div class="flex gap-4 items-center px-4">
-                        <a href="https://github.com/dimas1625" target="_blank" class="hover:text-indigo-400 transition"><i data-lucide="github"></i></a>
-                        <a href="https://www.linkedin.com/in/dimas-nugroho-11a04132b/" target="_blank" class="hover:text-indigo-400 transition"><i data-lucide="linkedin"></i></a>
-                    </div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="#home" class="text-slate-400 hover:text-white transition">Home</a>
+                    <a href="#about" class="text-slate-400 hover:text-white transition">About</a>
+                    <a href="#experience" class="text-slate-400 hover:text-white transition">Experience</a>
+                    <a href="#skills" class="text-slate-400 hover:text-white transition">Skills</a>
+                    <a href="#projects" class="text-slate-400 hover:text-white transition">Projects</a>
+                    <a href="#contact" class="text-slate-400 hover:text-white transition">Contact</a>
                 </div>
             </div>
-            <div class="flex justify-center md:justify-end mt-8 md:mt-0">
-            <div class="w-80 h-100 rounded-3xl border border-indigo-500/20 flex items-center justify-center relative group overflow-hidden">
-                <div class="absolute -inset-4 bg-indigo-500/10 blur-xl group-hover:bg-indigo-500/20 transition duration-500"></div>
-                    <img src="abc.png" class="w-full h-full object-cover rounded-3xl relative z-10" />
-                </div>
-            </div>
-        </div>
-    </section>
+        </nav>
 
-    <!-- About Section -->
-    <section id="about" class="py-24 bg-slate-900">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="grid md:grid-cols-2 gap-16 items-center">
-                <div class="space-y-6">
-                    <h2 class="text-3xl font-bold flex items-center gap-4">
-                        <span class="w-8 h-1 bg-indigo-500 rounded"></span> About Me
-                    </h2>
-                    <p class="text-slate-400 leading-relaxed text-lg">
-                        A UI/UX Designer and Informatics Engineering student at Politeknik Negeri Malang, focused on creating attractive, intuitive, and user-friendly interface designs. With hands-on experience through academic projects in UI/UX design and web development, continuously developing skills to deliver impactful digital solutions.
+        <!-- ===== HERO ===== -->
+        <section id="home" class="min-h-screen flex items-center pt-20 relative overflow-hidden">
+            <!-- Hero inner glow -->
+            <div class="absolute inset-0 pointer-events-none">
+                <div style="position:absolute;top:0;left:0;right:0;height:60%;background:radial-gradient(ellipse 60% 50% at 15% 20%, rgba(99,102,241,0.09) 0%, transparent 65%);"></div>
+            </div>
+
+            <div class="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center relative z-10">
+                <div class="fade-in">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full hero-gradient-pill text-indigo-400 text-[10px] font-bold mb-6 uppercase tracking-widest">
+                        UI/UX Designer & Web Developer
+                    </div>
+                    <h1 class="text-5xl md:text-7xl font-bold mb-6 leading-[1.1] tracking-tight text-white">
+                        Hello, I'm <br>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-violet-400 to-indigo-600">Dimas Nugroho</span>
+                    </h1>
+                    <p class="text-slate-400 text-lg mb-10 max-w-lg leading-relaxed">
+                        UI/UX Designer with hands-on experience through academic projects in web development and user interface design.
                     </p>
+                    <div class="flex gap-4">
+                        <a href="https://github.com/dimas1625" target="_blank" class="text-slate-400 hover:text-indigo-400 transition"><i data-lucide="github"></i></a>
+                        <a href="https://www.linkedin.com/in/dimas-nugroho-11a04132b/" target="_blank" class="text-slate-400 hover:text-indigo-400 transition"><i data-lucide="linkedin"></i></a>
+                    </div>
                 </div>
-                    <div class="w-80 h-100 rounded-3xl border border-indigo-500/20 flex items-center justify-center relative group overflow-hidden">
-                    <div class="absolute -inset-4 bg-indigo-500/10 blur-xl group-hover:bg-indigo-500/20 transition duration-500"></div>
-                        <img src="abc.png" class="w-full h-full object-cover rounded-3xl relative z-10" />
+
+                <div class="flex justify-center md:justify-end fade-in" style="transition-delay:0.15s">
+                    <div class="photo-frame">
+                        <div class="w-72 h-96 md:w-80 md:h-[450px] rounded-[1.5rem] overflow-hidden border border-white/8"
+                             style="background:rgba(15,23,42,0.6);box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+                            <img src="bromo.jpg" class="w-full h-full object-cover" />
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Experience Section -->
-    <section id="experience" class="py-24 bg-slate-950">
-        <div class="max-w-4xl mx-auto px-6">
-            <h2 class="text-3xl font-bold mb-16 text-center">Experience</h2>
-            
-            <div class="space-y-12">
-                <!-- Kerja -->
-                <div class="relative pl-8 border-l border-slate-800">
-                    <div class="absolute -left-2 top-0 w-4 h-4 rounded-full bg-indigo-500 ring-4 ring-indigo-500/20"></div>
-                    <div class="mb-2">
-                        <span class="text-indigo-400 font-mono text-sm">January 2022 - April 2022</span>
-                        <h3 class="text-xl font-bold mt-1">Network Technician Intern</h3>
-                        <p class="text-slate-400">Dinas Komunikasi dan Informatika - Jombang</p>
+        <!-- ===== ABOUT ===== -->
+        <section id="about" class="py-24 section-about">
+            <div class="max-w-6xl mx-auto px-6">
+                <div class="grid md:grid-cols-2 gap-16 items-center">
+                    <div class="space-y-6 fade-in">
+                        <h2 class="text-3xl font-bold text-white section-title">About Me</h2>
+                        <p class="text-slate-400 leading-relaxed text-lg text-justify">
+                            A UI/UX Designer and Informatics Engineering student at Politeknik Negeri Malang. Focused on creating attractive and user-friendly interface designs through academic projects in web development.
+                        </p>
                     </div>
-                    <ul class="mt-4 space-y-2 text-slate-500 text-sm list-disc pl-4">
-                        <li>Assisted in the installation and configuration of LAN and Wi-Fi networks in an office environment.</li>
-                        <li>Performed maintenance on network devices such as routers, switches, and servers.</li>
-                        <li>Supported data backup operations and operating system reinstallation.</li>
-                    </ul>
+                    <div class="flex justify-center md:justify-end fade-in" style="transition-delay:0.1s">
+                        <div class="photo-frame">
+                            <div class="w-64 h-80 md:w-72 md:h-96 rounded-[1.5rem] overflow-hidden border border-white/8"
+                                 style="background:rgba(15,23,42,0.6);box-shadow:0 20px 60px rgba(0,0,0,0.4);">
+                                <img src="bromo.jpg" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+        </section>
 
-                <!-- Pendidikan -->
-                <div class="relative pl-8 border-l border-slate-800">
-                    <div class="absolute -left-2 top-0 w-4 h-4 rounded-full bg-slate-700"></div>
-                    <div class="mb-2">
-                        <span class="text-slate-500 font-mono text-sm">August 2023 - Present</span>
-                        <h3 class="text-xl font-bold mt-1">State Polytechnic of Malang</h3>
-                        <p class="text-slate-400">Information Technology</p> 
+        <!-- ===== EXPERIENCE ===== -->
+        <section id="experience" class="py-24 section-experience">
+            <div class="max-w-4xl mx-auto px-6">
+                <h2 class="text-3xl font-bold mb-16 text-center text-white fade-in">Experience</h2>
+
+                <div class="space-y-12">
+                    <div class="relative pl-8 border-l border-slate-800/80 fade-in">
+                        <div class="absolute -left-2 top-0 w-4 h-4 rounded-full timeline-dot-active"></div>
+                        <div class="mb-2">
+                            <span class="text-indigo-400 font-mono text-sm">January 2022 - April 2022</span>
+                            <h3 class="text-xl font-bold mt-1 text-white">Network Technician Intern</h3>
+                            <p class="text-slate-400">Dinas Komunikasi dan Informatika - Jombang</p>
+                        </div>
                         <ul class="mt-4 space-y-2 text-slate-500 text-sm list-disc pl-4">
-                            <li>Learn basic of Programming, Web Development, Mobile Development, Machine Learning, Database Management, Networking, UI/UX Design, Software Engineering, Algorithms, Data Structures, and Object-Oriented Programming.</li>
-                            <li>Built and developed several academic projects utilizing UI/UX design and web development technologies.</li>
-                            <li>Built a final project as part of assignment-based learning using tech stacks learned during the semester, including basic programming, UI/UX design, and web development.</li>
+                            <li>Assisted in the installation and configuration of LAN and Wi-Fi networks in an office environment.</li>
+                            <li>Performed maintenance on network devices such as routers, switches, and servers.</li>
+                            <li>Supported data backup operations and operating system reinstallation.</li>
                         </ul>
                     </div>
-                </div>
 
-                <div class="relative pl-8 border-l border-slate-800">
-                    <div class="absolute -left-2 top-0 w-4 h-4 rounded-full bg-slate-700"></div>
-                    <div class="mb-2">
-                        <span class="text-slate-500 font-mono text-sm">July 2020 - Mei 2023</span>
-                        <h3 class="text-xl font-bold mt-1">SMK Negeri 3 Jombang</h3>
-                        <p class="text-slate-400">Computer and Network Engineering</p>
-                        <ul class="mt-4 space-y-2 text-slate-500 text-sm list-disc pl-4">
-                            <li>Configured and managed routers and switches to build stable and efficient local area networks (LAN).</li>
-                            <li>Performed troubleshooting on network connectivity issues including IP addressing, DNS, and DHCP configuration.</li>
-                        </ul>
+                    <div class="relative pl-8 border-l border-slate-800/80 fade-in">
+                        <div class="absolute -left-2 top-0 w-4 h-4 rounded-full bg-slate-700 ring-4 ring-slate-700/20"></div>
+                        <div class="mb-2">
+                            <span class="text-slate-500 font-mono text-sm">August 2023 - Present</span>
+                            <h3 class="text-xl font-bold mt-1 text-white">State Polytechnic of Malang</h3>
+                            <p class="text-slate-400">Information Technology</p>
+                            <ul class="mt-4 space-y-2 text-slate-500 text-sm list-disc pl-4">
+                                <li>Learn basic of Programming, Web Development, Mobile Development, Machine Learning, Database Management, Networking, UI/UX Design, Software Engineering, Algorithms, Data Structures, and OOP.</li>
+                                <li>Built and developed several academic projects utilizing UI/UX design and web development technologies.</li>
+                                <li>Built a final project as part of assignment-based learning using tech stacks learned during the semester.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="relative pl-8 border-l border-slate-800/80 fade-in">
+                        <div class="absolute -left-2 top-0 w-4 h-4 rounded-full bg-slate-700 ring-4 ring-slate-700/20"></div>
+                        <div class="mb-2">
+                            <span class="text-slate-500 font-mono text-sm">July 2020 - Mei 2023</span>
+                            <h3 class="text-xl font-bold mt-1 text-white">SMK Negeri 3 Jombang</h3>
+                            <p class="text-slate-400">Computer and Network Engineering</p>
+                            <ul class="mt-4 space-y-2 text-slate-500 text-sm list-disc pl-4">
+                                <li>Configured and managed routers and switches to build stable and efficient local area networks (LAN).</li>
+                                <li>Performed troubleshooting on network connectivity issues including IP addressing, DNS, and DHCP configuration.</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="py-24 bg-slate-900 scroll-mt-32">
-        <div class="max-w-6xl mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold mb-16 inline-block border-b-2 border-indigo-500 pb-2">Tech Stack & Tools</h2>
-            
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-                <!-- Hard Skills -->
-                <div class="p-6 glass rounded-2xl group hover:border-indigo-500 transition cursor-default">
-                    <i data-lucide="code-2" class="w-8 h-8 mx-auto mb-4 text-indigo-400"></i>
-                    <p class="text-sm font-semibold">HTML/CSS</p>
-                </div>
-                <div class="p-6 glass rounded-2xl group hover:border-indigo-500 transition cursor-default">
-                    <i data-lucide="palette" class="w-8 h-8 mx-auto mb-4 text-pink-400"></i>
-                    <p class="text-sm font-semibold">Figma/UI/UX</p>
-                </div>
-                <div class="p-6 glass rounded-2xl group hover:border-indigo-500 transition cursor-default">
-                    <i data-lucide="wind" class="w-8 h-8 mx-auto mb-4 text-sky-400"></i>
-                    <p class="text-sm font-semibold">Tailwind</p>
-                </div>
-                <div class="p-6 glass rounded-2xl group hover:border-indigo-500 transition cursor-default">
-                    <i data-lucide="database" class="w-8 h-8 mx-auto mb-4 text-emerald-400"></i>
-                    <p class="text-sm font-semibold">MySQL/PHP</p>
-                </div>
-                <div class="p-6 glass rounded-2xl group hover:border-indigo-500 transition cursor-default">
-                    <i data-lucide="layers" class="w-8 h-8 mx-auto mb-4 text-orange-400"></i>
-                    <p class="text-sm font-semibold">Laravel</p>
-                </div>
-                <div class="p-6 glass rounded-2xl group hover:border-indigo-500 transition cursor-default">
-                    <i data-lucide="git-branch" class="w-8 h-8 mx-auto mb-4 text-slate-400"></i>
-                    <p class="text-sm font-semibold">Git/GitHub</p>
-                </div>
-            </div>
+        <!-- ===== SKILLS ===== -->
+        <section id="skills" class="py-24 section-skills scroll-mt-32">
+            <div class="max-w-6xl mx-auto px-6 text-center">
+                <h2 class="text-3xl font-bold mb-16 inline-block text-white fade-in"
+                    style="border-bottom:2px solid #6366f1;padding-bottom:0.5rem;">Tech Stack & Tools</h2>
 
-            <!-- Soft Skills -->
-            <div class="mt-16 flex flex-wrap justify-center gap-4">
-                <span class="px-6 py-2 glass rounded-full text-xs font-medium hover:bg-white/10 transition">Leadership</span>
-                <span class="px-6 py-2 glass rounded-full text-xs font-medium hover:bg-white/10 transition">Team Work</span>
-                <span class="px-6 py-2 glass rounded-full text-xs font-medium hover:bg-white/10 transition">Problem Solving</span>
-                <span class="px-6 py-2 glass rounded-full text-xs font-medium hover:bg-white/10 transition">Communication</span>
-                <span class="px-6 py-2 glass rounded-full text-xs font-medium hover:bg-white/10 transition">Time Management</span>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="py-24 bg-slate-950 scroll-mt-20">
-        <div class="max-w-6xl mx-auto px-6">
-            <h2 class="text-3xl font-bold mb-16 text-center inline-block border-b-2 border-indigo-500 pb-2">Projects</h2>
-            
-            <div class="grid md:grid-cols-2 gap-8">
-                <!-- Project Card -->
-                <div class="p-6 glass rounded-2xl border border-indigo-500/20 hover:border-indigo-500 transition">
-                    <h3 class="text-lg font-bold mb-2 text-white">Kopi - UI/UX Design</h3>
-                    <p class="text-slate-400 text-sm mb-4">Coffee shop interface design using Figma, focused on creating an attractive and user-friendly experience.</p>
-                    
-                    <iframe 
-                        style="border: 1px solid rgba(0, 0, 0, 0.1);" 
-                        width="100%" 
-                        height="350" 
-                        src="https://embed.figma.com/design/KQEgGP6wXKSWO3EvOpjXYJ/Kopi-?node-id=0-1&embed-host=share" 
-                        allowfullscreen
-                        class="rounded-xl">
-                    </iframe>
-
-                    <a href="https://www.figma.com/design/KQEgGP6wXKSWO3EvOpjXYJ/Kopi-?node-id=0-1" 
-                    target="_blank"
-                    class="inline-block mt-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm rounded-lg transition">
-                    View on Figma →
-                    </a>
-                </div>
-                <!-- Project Card 2 -->
-                <div class="p-6 glass rounded-2xl border border-indigo-500/20 hover:border-indigo-500 transition">
-                    <h3 class="text-lg font-bold mb-2 text-white">SIBETA - UI/UX Design</h3>
-                    <p class="text-slate-400 text-sm mb-4">Project-based learning interface design using Figma, focused on creating an intuitive and responsive user experience.</p>
-                    
-                    <iframe 
-                        style="border: 1px solid rgba(0, 0, 0, 0.1);" 
-                        width="100%" 
-                        height="350" 
-                        src="https://embed.figma.com/design/1Lxg9m2NG1ApqdEAVyv2q5/Project-PBL?node-id=389-6&embed-host=share" 
-                        allowfullscreen
-                        class="rounded-xl">
-                    </iframe>
-
-                    <a href="https://www.figma.com/design/1Lxg9m2NG1ApqdEAVyv2q5/Project-PBL?node-id=389-6" 
-                    target="_blank"
-                    class="inline-block mt-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm rounded-lg transition">
-                    View on Figma →
-                    </a>
-                </div>
-                <!-- Project Card - Halaman Profil Bandung -->
-                <div class="p-6 glass rounded-2xl border border-indigo-500/20 hover:border-indigo-500 transition">
-                    <h3 class="text-lg font-bold mb-2 text-white">Halaman Profil Bandung - Web Project</h3>
-                    <p class="text-slate-400 text-sm mb-4">A web profile page for the city of Bandung, built with HTML and CSS, focused on clean layout and responsive design.</p>
-
-                    <!-- Preview iframe -->
-                    <iframe 
-                        src="https://halamanprofilbandung.netlify.app/" 
-                        width="100%" 
-                        height="350" 
-                        class="rounded-xl border border-indigo-500/20"
-                        loading="lazy">
-                    </iframe>
-
-                    <a href="https://halamanprofilbandung.netlify.app/" 
-                    target="_blank"
-                    class="inline-block mt-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm rounded-lg transition">
-                    Live Demo →
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="py-24 bg-slate-950">
-        <div class="max-w-4xl mx-auto px-6">
-            <div class="glass p-12 rounded-3xl border border-indigo-500/10">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold mb-4">Let's Discuss</h2>
-                    <p class="text-slate-400">Interested in collaborating or have questions? Contact me anytime.</p>
-                </div>
-                
-                <div class="grid md:grid-cols-2 gap-12">
-                    <div class="space-y-8">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-400">
-                                <i data-lucide="mail"></i>
-                            </div>
-                            <div>
-                                <p class="text-xs text-slate-500 uppercase">Email</p>
-                                <p class="font-medium">ndimas065@gmail.com</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-400">
-                                <i data-lucide="phone"></i>
-                            </div>
-                            <div>
-                                <p class="text-xs text-slate-500 uppercase">Phone</p>
-                                <p class="font-medium">+62 822-5716-5847</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-indigo-500/10 rounded-xl flex items-center justify-center text-indigo-400">
-                                <i data-lucide="map-pin"></i>
-                            </div>
-                            <div>
-                                <p class="text-xs text-slate-500 uppercase">Location</p>
-                                <p class="font-medium">Malang, Jawa Timur, Indonesia</p>
-                            </div>
-                        </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                    <div class="p-6 glass rounded-2xl skill-card fade-in cursor-default">
+                        <i data-lucide="code-2" class="w-8 h-8 mx-auto mb-4 text-indigo-400"></i>
+                        <p class="text-sm font-semibold">HTML/CSS</p>
                     </div>
-                    
-                    <form id="contactForm" class="space-y-4">
-                        <input type="text" placeholder="Name" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 focus:outline-none focus:border-indigo-500 transition">
-                        <input type="email" placeholder="Email" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 focus:outline-none focus:border-indigo-500 transition">
-                        <textarea rows="4" placeholder="Message" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 focus:outline-none focus:border-indigo-500 transition"></textarea>
-                        <button type="button" onclick="sendMessage()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg transition">Kirim Pesan</button>
-                    </form>
+                    <div class="p-6 glass rounded-2xl skill-card fade-in cursor-default" style="transition-delay:0.05s">
+                        <i data-lucide="palette" class="w-8 h-8 mx-auto mb-4 text-pink-400"></i>
+                        <p class="text-sm font-semibold">Figma/UI/UX</p>
+                    </div>
+                    <div class="p-6 glass rounded-2xl skill-card fade-in cursor-default" style="transition-delay:0.1s">
+                        <i data-lucide="wind" class="w-8 h-8 mx-auto mb-4 text-sky-400"></i>
+                        <p class="text-sm font-semibold">Tailwind</p>
+                    </div>
+                    <div class="p-6 glass rounded-2xl skill-card fade-in cursor-default" style="transition-delay:0.15s">
+                        <i data-lucide="database" class="w-8 h-8 mx-auto mb-4 text-emerald-400"></i>
+                        <p class="text-sm font-semibold">MySQL/PHP</p>
+                    </div>
+                    <div class="p-6 glass rounded-2xl skill-card fade-in cursor-default" style="transition-delay:0.2s">
+                        <i data-lucide="layers" class="w-8 h-8 mx-auto mb-4 text-orange-400"></i>
+                        <p class="text-sm font-semibold">Laravel</p>
+                    </div>
+                    <div class="p-6 glass rounded-2xl skill-card fade-in cursor-default" style="transition-delay:0.25s">
+                        <i data-lucide="git-branch" class="w-8 h-8 mx-auto mb-4 text-slate-400"></i>
+                        <p class="text-sm font-semibold">Git/GitHub</p>
+                    </div>
+                </div>
+
+                <div class="mt-16 flex flex-wrap justify-center gap-4 fade-in">
+                    <span class="px-6 py-2 glass rounded-full text-xs font-medium hover:bg-white/10 transition">Leadership</span>
+                    <span class="px-6 py-2 glass rounded-full text-xs font-medium hover:bg-white/10 transition">Team Work</span>
+                    <span class="px-6 py-2 glass rounded-full text-xs font-medium hover:bg-white/10 transition">Problem Solving</span>
+                    <span class="px-6 py-2 glass rounded-full text-xs font-medium hover:bg-white/10 transition">Communication</span>
+                    <span class="px-6 py-2 glass rounded-full text-xs font-medium hover:bg-white/10 transition">Time Management</span>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Footer -->
-    <footer class="py-12 border-t border-slate-900 text-center text-slate-500 text-sm">
-        <p>&copy; 2024 Muhammad Dimas Ajie Nugroho. All rights reserved.</p>
-        <div class="mt-4 flex justify-center gap-6">
-            <a href="https://github.com/dimas1625" target="_blank" class="hover:text-indigo-400 transition">Github</a>
-            <a href="https://www.linkedin.com/in/dimas-nugroho-11a04132b/" target="_blank" class="hover:text-indigo-400 transition">LinkedIn</a>
-            <a href="https://www.instagram.com/_dimsngrho/" target="_blank" class="hover:text-indigo-400 transition">Instagram</a>
-        </div>
-    </footer>
+        <!-- ===== PROJECTS ===== -->
+        <section id="projects" class="py-24 section-projects scroll-mt-20">
+            <div class="max-w-6xl mx-auto px-6">
+                <h2 class="text-3xl font-bold mb-16 text-center inline-block text-white fade-in"
+                    style="border-bottom:2px solid #6366f1;padding-bottom:0.5rem;">Projects</h2>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="p-6 glass rounded-2xl border border-indigo-500/15 hover:border-indigo-500/50 transition fade-in">
+                        <h3 class="text-lg font-bold mb-2 text-white">Kopi - UI/UX Design</h3>
+                        <p class="text-slate-400 text-sm mb-4">Coffee shop interface design using Figma, focused on creating an attractive and user-friendly experience.</p>
+                        <iframe style="border:1px solid rgba(255,255,255,0.05);" width="100%" height="350"
+                            src="https://embed.figma.com/design/KQEgGP6wXKSWO3EvOpjXYJ/Kopi-?node-id=0-1&embed-host=share"
+                            allowfullscreen class="rounded-xl"></iframe>
+                        <a href="https://www.figma.com/design/KQEgGP6wXKSWO3EvOpjXYJ/Kopi-?node-id=0-1" target="_blank"
+                           class="inline-block mt-4 px-4 py-2 btn-primary text-white text-sm rounded-lg font-medium">
+                            View on Figma →
+                        </a>
+                    </div>
+
+                    <div class="p-6 glass rounded-2xl border border-indigo-500/15 hover:border-indigo-500/50 transition fade-in" style="transition-delay:0.1s">
+                        <h3 class="text-lg font-bold mb-2 text-white">SIBETA - UI/UX Design</h3>
+                        <p class="text-slate-400 text-sm mb-4">Project-based learning interface design using Figma, focused on creating an intuitive and responsive user experience.</p>
+                        <iframe style="border:1px solid rgba(255,255,255,0.05);" width="100%" height="350"
+                            src="https://embed.figma.com/design/1Lxg9m2NG1ApqdEAVyv2q5/Project-PBL?node-id=389-6&embed-host=share"
+                            allowfullscreen class="rounded-xl"></iframe>
+                        <a href="https://www.figma.com/design/1Lxg9m2NG1ApqdEAVyv2q5/Project-PBL?node-id=389-6" target="_blank"
+                           class="inline-block mt-4 px-4 py-2 btn-primary text-white text-sm rounded-lg font-medium">
+                            View on Figma →
+                        </a>
+                    </div>
+
+                    <div class="p-6 glass rounded-2xl border border-indigo-500/15 hover:border-indigo-500/50 transition fade-in" style="transition-delay:0.2s">
+                        <h3 class="text-lg font-bold mb-2 text-white">Halaman Profil Bandung - Web Project</h3>
+                        <p class="text-slate-400 text-sm mb-4">A web profile page for the city of Bandung, built with HTML and CSS, focused on clean layout and responsive design.</p>
+                        <iframe src="https://halamanprofilbandung.netlify.app/" width="100%" height="350"
+                            class="rounded-xl border border-white/5" loading="lazy"></iframe>
+                        <a href="https://halamanprofilbandung.netlify.app/" target="_blank"
+                           class="inline-block mt-4 px-4 py-2 btn-primary text-white text-sm rounded-lg font-medium">
+                            Live Demo →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CONTACT ===== -->
+        <section id="contact" class="py-24 section-contact">
+            <div class="max-w-4xl mx-auto px-6">
+                <div class="contact-card p-12 rounded-3xl fade-in">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl font-bold mb-4 text-white">Let's Discuss</h2>
+                        <p class="text-slate-400">Interested in collaborating or have questions? Contact me anytime.</p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-12">
+                        <div class="space-y-8">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl flex items-center justify-center text-indigo-400"
+                                     style="background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);">
+                                    <i data-lucide="mail"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-500 uppercase tracking-widest">Email</p>
+                                    <p class="font-medium text-slate-200">ndimas065@gmail.com</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl flex items-center justify-center text-indigo-400"
+                                     style="background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);">
+                                    <i data-lucide="phone"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-500 uppercase tracking-widest">Phone</p>
+                                    <p class="font-medium text-slate-200">+62 822-5716-5847</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl flex items-center justify-center text-indigo-400"
+                                     style="background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.2);">
+                                    <i data-lucide="map-pin"></i>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-slate-500 uppercase tracking-widest">Location</p>
+                                    <p class="font-medium text-slate-200">Malang, Jawa Timur, Indonesia</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form id="contactForm" class="space-y-4">
+                            <input type="text" placeholder="Name"
+                                class="w-full rounded-lg px-4 py-3 focus:outline-none transition text-slate-200 placeholder-slate-600"
+                                style="background:rgba(6,9,16,0.7);border:1px solid rgba(255,255,255,0.07);"
+                                onfocus="this.style.borderColor='rgba(99,102,241,0.5)'"
+                                onblur="this.style.borderColor='rgba(255,255,255,0.07)'">
+                            <input type="email" placeholder="Email"
+                                class="w-full rounded-lg px-4 py-3 focus:outline-none transition text-slate-200 placeholder-slate-600"
+                                style="background:rgba(6,9,16,0.7);border:1px solid rgba(255,255,255,0.07);"
+                                onfocus="this.style.borderColor='rgba(99,102,241,0.5)'"
+                                onblur="this.style.borderColor='rgba(255,255,255,0.07)'">
+                            <textarea rows="4" placeholder="Message"
+                                class="w-full rounded-lg px-4 py-3 focus:outline-none transition text-slate-200 placeholder-slate-600"
+                                style="background:rgba(6,9,16,0.7);border:1px solid rgba(255,255,255,0.07);resize:none;"
+                                onfocus="this.style.borderColor='rgba(99,102,241,0.5)'"
+                                onblur="this.style.borderColor='rgba(255,255,255,0.07)'"></textarea>
+                            <button type="button" onclick="sendMessage()"
+                                class="w-full btn-primary text-white font-bold py-3 rounded-lg">
+                                Kirim Pesan
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== FOOTER ===== -->
+        <footer class="py-12 text-center text-slate-500 text-sm">
+            <p>&copy; Muhammad Dimas Ajie Nugroho. All rights reserved.</p>
+            <div class="mt-4 flex justify-center gap-6">
+                <a href="https://github.com/dimas1625" target="_blank" class="hover:text-indigo-400 transition">Github</a>
+                <a href="https://www.linkedin.com/in/dimas-nugroho-11a04132b/" target="_blank" class="hover:text-indigo-400 transition">LinkedIn</a>
+                <a href="https://www.instagram.com/_dimsngrho/" target="_blank" class="hover:text-indigo-400 transition">Instagram</a>
+            </div>
+        </footer>
+
+    </div><!-- end page-content -->
 
     <script>
-        // Inisialisasi Ikon Lucide
         lucide.createIcons();
 
-        // Mobile Menu Toggle
-        function toggleMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        }
-
-        // Smooth Contact Form Feedback
         function sendMessage() {
             const msgBox = document.createElement('div');
-            msgBox.className = 'fixed bottom-10 right-10 bg-emerald-600 text-white px-6 py-3 rounded-lg shadow-xl z-50 animate-bounce';
-            msgBox.innerText = 'Pesan Anda berhasil (simulasi) dikirim!';
+            msgBox.style.cssText = 'position:fixed;bottom:2.5rem;right:2.5rem;background:linear-gradient(135deg,#059669,#10b981);color:white;padding:0.75rem 1.5rem;border-radius:0.75rem;box-shadow:0 8px 30px rgba(16,185,129,0.3);z-index:9999;font-size:0.875rem;font-weight:500;';
+            msgBox.innerText = '✓ Pesan berhasil dikirim!';
             document.body.appendChild(msgBox);
-            setTimeout(() => msgBox.remove(), 3000);
+            setTimeout(() => { msgBox.style.opacity='0'; msgBox.style.transition='opacity 0.5s'; setTimeout(()=>msgBox.remove(),500); }, 3000);
             document.getElementById('contactForm').reset();
         }
+
+        // Scroll fade-in observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    observer.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.12 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
     </script>
 </body>
 </html>
