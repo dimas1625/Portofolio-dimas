@@ -212,55 +212,89 @@
     </div>
 </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="py-24 bg-slate-950 scroll-mt-20">
-        <div class="max-w-6xl mx-auto px-6">
-            <h2 class="text-3xl font-bold mb-16 text-center inline-block border-b-2 border-indigo-500 pb-2">Projects</h2>
-            
-            <div class="grid md:grid-cols-2 gap-8">
-                <!-- Project Card -->
-                <div class="p-6 glass rounded-2xl border border-indigo-500/20 hover:border-indigo-500 transition">
-                    <h3 class="text-lg font-bold mb-2 text-white">Kopi - UI/UX Design</h3>
-                    <p class="text-slate-400 text-sm mb-4">Coffee shop interface design using Figma, focused on creating an attractive and user-friendly experience.</p>
-                    
-                    <iframe 
-                        style="border: 1px solid rgba(0, 0, 0, 0.1);" 
-                        width="100%" 
-                        height="350" 
-                        src="https://embed.figma.com/design/KQEgGP6wXKSWO3EvOpjXYJ/Kopi-?node-id=1-13&embed-host=share" 
-                        allowfullscreen
-                        class="rounded-xl">
-                    </iframe>
+<!-- ===== PROJECTS ===== -->
+<section id="projects" class="py-24 section-projects scroll-mt-20">
+    <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-3xl font-bold mb-16 text-center inline-block text-white fade-in">Projects</h2>
 
-                    <a href="https://www.figma.com/design/KQEgGP6wXKSWO3EvOpjXYJ/Kopi-?node-id=1-13" 
-                    target="_blank"
-                    class="inline-block mt-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm rounded-lg transition">
-                    View on Figma →
-                    </a>
-                </div>
-                <!-- Project Card 2 -->
-                <div class="p-6 glass rounded-2xl border border-indigo-500/20 hover:border-indigo-500 transition">
-                    <h3 class="text-lg font-bold mb-2 text-white">SIBETA - UI/UX Design</h3>
-                    <p class="text-slate-400 text-sm mb-4">Project-based learning interface design using Figma, focused on creating an intuitive and responsive user experience.</p>
-                    
-                    <iframe 
-                        style="border: 1px solid rgba(0, 0, 0, 0.1);" 
-                        width="100%" 
-                        height="350" 
-                        src="https://embed.figma.com/design/1Lxg9m2NG1ApqdEAVyv2q5/Project-PBL?node-id=389-6&embed-host=share" 
-                        allowfullscreen
-                        class="rounded-xl">
-                    </iframe>
+        <div class="grid md:grid-cols-2 gap-8">
 
-                    <a href="https://www.figma.com/design/1Lxg9m2NG1ApqdEAVyv2q5/Project-PBL?node-id=389-6" 
-                    target="_blank"
-                    class="inline-block mt-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm rounded-lg transition">
-                    View on Figma →
-                    </a>
+            <!-- Static Routing -->
+            <div class="p-6 glass rounded-2xl border border-indigo-500/15 hover:border-indigo-500/50 transition fade-in">
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="text-lg font-bold text-white">Static Routing</h3>
+                    <i data-lucide="network" class="text-indigo-400 w-6 h-6"></i>
                 </div>
+                <p class="text-slate-400 text-sm mb-4">
+                    Konfigurasi routing statis untuk menghubungkan dua LAN berbeda. Proyek ini fokus pada optimasi konektivitas end-to-end melalui router perantara dan manajemen gateway.
+                </p>
+                <div class="rounded-xl overflow-hidden mb-4 border border-white/5 bg-slate-900/50 p-2">
+                    <img src="Topology.png" alt="Network Topology" class="w-full h-48 object-cover rounded-lg opacity-80 hover:opacity-100 transition">
+                </div>
+                <a href="https://drive.google.com/file/d/1nGPyAgAJJW7W6hi33G0vQolr8QGp2RJJ/view?usp=sharing" target="_blank"
+                   class="inline-flex items-center gap-2 mt-4 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm rounded-xl font-medium transition-all duration-200 hover:-translate-y-0.5 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40">
+                    <i data-lucide="" class="w-4 h-4"></i>
+                    View Project Documentation
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
             </div>
+
+            <!-- Kopi UI/UX -->
+            <div class="p-6 glass rounded-2xl border border-indigo-500/15 hover:border-indigo-500/50 transition fade-in" style="transition-delay:0.1s">
+                <div class="flex justify-between items-start mb-2">
+                    <h3 class="text-lg font-bold text-white">Kopi - UI/UX Design</h3>
+                    <i data-lucide="palette" class="text-pink-400 w-6 h-6"></i>
+                </div>
+                <p class="text-slate-400 text-sm mb-4">Coffee shop interface design using Figma, focused on creating an attractive and user-friendly experience.</p>
+                <iframe style="border:1px solid rgba(255,255,255,0.05);" width="100%" height="350"
+                    src="https://embed.figma.com/design/KQEgGP6wXKSWO3EvOpjXYJ/Kopi-?node-id=0-1&embed-host=share"
+                    allowfullscreen class="rounded-xl"></iframe>
+                <a href="https://www.figma.com/design/KQEgGP6wXKSWO3EvOpjXYJ/Kopi-?node-id=0-1" target="_blank"
+                   class="inline-flex items-center gap-2 mt-4 px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white text-sm rounded-xl font-medium transition-all duration-200 hover:-translate-y-0.5 shadow-lg shadow-purple-500/20 hover:shadow-purple-500/40">
+                    <i data-lucide="figma" class="w-4 h-4"></i>
+                    View on Figma
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+
+            <!-- SIBETA UI/UX -->
+            <div class="p-6 glass rounded-2xl border border-indigo-500/15 hover:border-indigo-500/50 transition fade-in" style="transition-delay:0.2s">
+                <div class="flex justify-between items-start mb-2">
+                    <h3 class="text-lg font-bold text-white">SIBETA - UI/UX Design</h3>
+                    <i data-lucide="layout-dashboard" class="text-purple-400 w-6 h-6"></i>
+                </div>
+                <p class="text-slate-400 text-sm mb-4">Project-based learning interface design using Figma, focused on creating an intuitive and responsive user experience.</p>
+                <iframe style="border:1px solid rgba(255,255,255,0.05);" width="100%" height="350"
+                    src="https://embed.figma.com/design/1Lxg9m2NG1ApqdEAVyv2q5/Project-PBL?node-id=389-6&embed-host=share"
+                    allowfullscreen class="rounded-xl"></iframe>
+                <a href="https://www.figma.com/design/1Lxg9m2NG1ApqdEAVyv2q5/Project-PBL?node-id=389-6" target="_blank"
+                   class="inline-flex items-center gap-2 mt-4 px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white text-sm rounded-xl font-medium transition-all duration-200 hover:-translate-y-0.5 shadow-lg shadow-purple-500/20 hover:shadow-purple-500/40">
+                    <i data-lucide="figma" class="w-4 h-4"></i>
+                    View on Figma
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+
+            <!-- Halaman Profil Bandung -->
+            <div class="p-6 glass rounded-2xl border border-indigo-500/15 hover:border-indigo-500/50 transition fade-in" style="transition-delay:0.3s">
+                <div class="flex justify-between items-start mb-2">
+                    <h3 class="text-lg font-bold text-white">Halaman Profil Bandung - Web Project</h3>
+                    <i data-lucide="globe" class="text-emerald-400 w-6 h-6"></i>
+                </div>
+                <p class="text-slate-400 text-sm mb-4">A web profile page for the city of Bandung, built with HTML and CSS, focused on clean layout and responsive design.</p>
+                <iframe src="https://halamanprofilbandung.netlify.app/" width="100%" height="350"
+                    class="rounded-xl border border-white/5" loading="lazy"></iframe>
+                <a href="https://halamanprofilbandung.netlify.app/" target="_blank"
+                   class="inline-flex items-center gap-2 mt-4 px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm rounded-xl font-medium transition-all duration-200 hover:-translate-y-0.5 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40">
+                    <i data-lucide="" class="w-4 h-4"></i>
+                    Live Demo
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- Contact Section -->
     <section id="contact" class="py-24 bg-slate-950">
