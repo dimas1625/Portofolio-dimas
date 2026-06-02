@@ -342,13 +342,25 @@
                             </div>
                         </div>
                     </div>
-                    
+
+                    <!-- Tambahkan script EmailJS di <head> -->
+                    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+                    <script>
+                        emailjs.init("service_2lme7c8"); 
+                    </script>
+                                        
                     <form id="contactForm" class="space-y-4">
-                        <input type="text" placeholder="Name" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 focus:outline-none focus:border-indigo-500 transition">
-                        <input type="email" placeholder="Email" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 focus:outline-none focus:border-indigo-500 transition">
-                        <textarea rows="4" placeholder="Message" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 focus:outline-none focus:border-indigo-500 transition"></textarea>
-                        <button type="button" onclick="sendMessage()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg transition">Kirim Pesan</button>
-                    </form>
+                    <input type="text" id="from_name" placeholder="Name" required
+                        class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 focus:outline-none focus:border-indigo-500 transition text-white">
+                    <input type="email" id="from_email" placeholder="Email" required
+                        class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 focus:outline-none focus:border-indigo-500 transition text-white">
+                    <textarea rows="4" id="message" placeholder="Message" required
+                        class="w-full bg-slate-900 border border-slate-800 rounded-lg px-4 py-3 focus:outline-none focus:border-indigo-500 transition text-white"></textarea>
+                    <button type="button" onclick="sendMessage()"
+                        class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-lg transition-all duration-200 hover:-translate-y-0.5 shadow-lg shadow-indigo-500/20">
+                        Kirim Pesan
+                    </button>
+                </form>
                 </div>
             </div>
         </div>
